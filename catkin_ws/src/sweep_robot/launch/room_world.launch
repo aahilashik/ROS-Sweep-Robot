@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+<include file="$(find sweep_robot)/launch/robot_description.launch"/>
+
+  <arg name="x" default="-3.0"/>
+  <arg name="y" default="1.0"/>
+  <arg name="z" default="0.1"/>
+  <arg name="R" default="3.142857143"/>
+  
+  <arg name="gui" 		default="true"/>
+  <arg name="debug" 		default="false"/>
+  <arg name="world" 		default="empty"/> 
+  <arg name="paused" 		default="false"/>
+  <arg name="headless" 		default="false"/>
+  <arg name="use_sim_time" 	default="true"/>
+
+  <param name="use_sim_time" value="true"/>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find turtlebot3_gazebo)/worlds/turtlebot3_house.world"/>
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    <arg name="gui" value="$(arg gui)"/>
+    <arg name="headless" value="$(arg headless)"/>
+    <arg name="debug" value="$(arg debug)"/>
+  </include>
+  
+  <!--spawn a robot in gazebo world-->
+  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf -param robot_description -model sweep_robot -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R)" />
+
+  <!--launch rviz
+  <node name="rviz" pkg="rviz" type="rviz" respawn="false"/>
+  -->
+</launch>
+
